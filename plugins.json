@@ -41,10 +41,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=tr.canlitv.team&sz=%size%",
-        "fileHash": "sha256-edf85aa71e110b8e4147df6e3e8a87c2cc10637d9120c307355c4e5b624517a7",
+        "fileHash": "sha256-5b2770cc47a3e3595c4080fada930593b8fff992e23ea7d8ed52c6addfd86d12",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 19916,
+        "fileSize": 21760,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -53,7 +53,7 @@
         "tvTypes": [
             "Live"
         ],
-        "version": 5,
+        "version": 6,
         "internalName": "CanliTV",
         "description": "Canl\u0131 TV",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/CanliTV.cs3",
@@ -81,10 +81,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.de&sz=%size%",
-        "fileHash": "sha256-88066f7a9026d490e26ea509225c2c591f821f591e6fdc01d32a8226da9c458c",
+        "fileHash": "sha256-aa05895278dbc51c7d20a474036a28bbef5d1efc80dfa1a22eebd9614136cda0",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 22305,
+        "fileSize": 24120,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -93,7 +93,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 3,
+        "version": 4,
         "internalName": "DiziBox",
         "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziBox.cs3",
@@ -142,10 +142,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizimom.beer&sz=%size%",
-        "fileHash": "sha256-610e6c1c985f55506ad9a01773e7428fdbd844c22777a003b7b404b7aac1d4e8",
+        "fileHash": "sha256-10eda3260a3c816f78365c72a82ef42edebcd125c4a3d913b9ed9557d847d9e6",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 30841,
+        "fileSize": 32389,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -154,7 +154,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 11,
+        "version": 12,
         "internalName": "DiziMom",
         "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziMom.cs3",
@@ -222,10 +222,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.now&sz=%size%",
-        "fileHash": "sha256-6f1401360e06c9cc8c91f817d5e01f73f8e9d6fa43840a9163e0288f9944497f",
+        "fileHash": "sha256-3120e4715c06e8bd311cee781d67351a35b784375e13c0907ac450c1b953c332",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 32532,
+        "fileSize": 33080,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -234,7 +234,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 6,
+        "version": 7,
         "internalName": "FullHDFilmizlesene",
         "description": "Sinema zevkini evinize kadar getirdik. T\u00fcrkiye'nin lider Film sitesinde, en yeni filmleri Full HD izleyin.",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FullHDFilmizlesene.cs3",
@@ -303,10 +303,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=selcukflix.com&sz=%size%",
-        "fileHash": "sha256-66d93640696d2e64c8a368b5190e384818ae119d01fc3777b2988cb34800d98b",
+        "fileHash": "sha256-096abd798864aa63f6deea36da7b458eef9a604fd61b9c5e402062d0a911e75f",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 15197,
+        "fileSize": 25663,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -315,7 +315,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 6,
+        "version": 7,
         "internalName": "IzleAI",
         "description": "SelcukFlix film sa\u011flay\u0131c\u0131s\u0131",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/IzleAI.cs3",
@@ -343,10 +343,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=kultfilmler.net&sz=%size%",
-        "fileHash": "sha256-9edb4222af22466317956a986fa99b76da3fdf2897a48442144c5861e9fa7a9d",
+        "fileHash": "sha256-c5e301c1a7cc6fa08b61eebc45faa8aead8b7ef5ee6fcd68103709f421ce0ed6",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 22754,
+        "fileSize": 27191,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -356,7 +356,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 8,
+        "version": 9,
         "internalName": "KultFilmler",
         "description": "K\u00fclt Filmler \u00f6zenle en iyi filmleri derler ve iyi bir altyaz\u0131l\u0131 film izleme deneyimi sunmay\u0131 ama\u00e7lar",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/KultFilmler.cs3",
@@ -384,10 +384,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=rarefilmm.com&sz=%size%",
-        "fileHash": "sha256-10dc2b735059e3573df759b5b6c8456c41a429fd126244f9586bdf0ddd581b3c",
+        "fileHash": "sha256-786220b5f2b43d0c6d8aba3b1b88591099eb47739f07fd6da0d25c5bf90a6238",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 16026,
+        "fileSize": 16153,
         "status": 1,
         "language": "en",
         "authors": [
@@ -396,7 +396,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 1,
+        "version": 2,
         "internalName": "RareFilmm",
         "description": "The Cave of Forgotten Films",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/RareFilmm.cs3",
@@ -404,10 +404,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=www.setfilmizle.ltd&sz=%size%",
-        "fileHash": "sha256-057b5b71b57f91c8294df098ec2a4e77b7312e00b3a012153eaa7bf42392fb02",
+        "fileHash": "sha256-78d5e67621781a2dfeb29da5c1a269940a7449bac256ca95e9090d5cad0b1dbf",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 24298,
+        "fileSize": 30934,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -417,7 +417,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 10,
+        "version": 11,
         "internalName": "SetFilmIzle",
         "description": "Setfilmizle sitemizde, donma ya\u015famadan T\u00fcrk\u00e7e dublaj ve altyaz\u0131l\u0131 filmleri ile dizileri muhte\u015fem 1080p full HD kalitesinde izleyebilirsiniz.",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SetFilmIzle.cs3",
