@@ -66,7 +66,8 @@ jobs:
             echo "cmdline-tools bulunamadi" >&2
             exit 1
           fi
-          yes | "$SDKMANAGER" --licenses > /dev/null
+          # yes SIGPIPE (141) ile ölür; pipefail'in adımı düşürmemesi için || true.
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
           "$SDKMANAGER" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Eklentileri derle
