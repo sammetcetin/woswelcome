@@ -1,0 +1,628 @@
+[
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=animecix.tv&sz=%size%",
+        "fileHash": "sha256-0d9e0c2c4bd34e1737cf88547122d2b100ef86ee2714fb4e93276126a2be382f",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22387,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Anime"
+        ],
+        "version": 8,
+        "internalName": "AnimeciX",
+        "description": "AnimeciX, animeleri ke\u015ffedebilece\u011finiz ve animeler hakk\u0131nda her \u015feyi \u00f6\u011frenebilece\u011finiz bir payla\u015f\u0131m platformudur.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/AnimeciX.cs3",
+        "name": "AnimeciX"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=belgeselx.com&sz=%size%",
+        "fileHash": "sha256-f8dcee3a54d03eae01ae63b25b805e52082bc9e9e6eb457a84ca4bdc9384278c",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22130,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Documentary"
+        ],
+        "version": 5,
+        "internalName": "BelgeselX",
+        "description": "En yeni belgeseller, t\u00fcrk\u00e7e altyaz\u0131l\u0131 yada dublaj olarak 1080p kalitesinde HD belgesel izle.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/BelgeselX.cs3",
+        "name": "BelgeselX"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=tr.canlitv.team&sz=%size%",
+        "fileHash": "sha256-edf85aa71e110b8e4147df6e3e8a87c2cc10637d9120c307355c4e5b624517a7",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 19916,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 5,
+        "internalName": "CanliTV",
+        "description": "Canl\u0131 TV",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/CanliTV.cs3",
+        "name": "CanliTV"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=cizgimax.online&sz=%size%",
+        "fileHash": "sha256-0d9266179e9d94d81ceaa116e11f0a52b6a3a069d548067a3e0dd104c5bf306d",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 24409,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Cartoon"
+        ],
+        "version": 6,
+        "internalName": "CizgiMax",
+        "description": "\u00c7izgiMax ile \u00c7izgi Film izlemek art\u0131k daha kolay, donmadan full hd ve reklams\u0131z bir sitedir, i\u00e7erisinde 700 den fazla \u00e7izgi film olan, Bu site bu i\u015fi profesyonelce yap\u0131yor.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/CizgiMax.cs3",
+        "name": "CizgiMax"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizibox.de&sz=%size%",
+        "fileHash": "sha256-88066f7a9026d490e26ea509225c2c591f821f591e6fdc01d32a8226da9c458c",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22305,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 3,
+        "internalName": "DiziBox",
+        "description": "Yabanc\u0131 Dizi izle, T\u00fcm yabanc\u0131 dizilerin yeni ve eski sezonlar\u0131n\u0131 full hd izleyebilece\u011finiz elit site.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziBox.cs3",
+        "name": "DiziBox"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=https://dizikorea3.com&sz=%size%",
+        "fileHash": "sha256-cc5f7e1b48c7b65ec73ffd16f9cf7e107f93f2e4a1d8f28d0c89d16297600564",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22530,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "AsianDrama",
+            "Movie"
+        ],
+        "version": 5,
+        "internalName": "DiziKorea",
+        "description": "En G\u00fcncel Kore Dizileri izleme Sitesi",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziKorea.cs3",
+        "name": "DiziKorea"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=dizilla.now&sz=%size%",
+        "fileHash": "sha256-ce3385a951690766b6971764e8713e618f02f426bbc06fa34ccb31e26556cfa7",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 24601,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 15,
+        "internalName": "Dizilla",
+        "description": "Dizilla t\u00fcm yabanc\u0131 dizileri \u00fccretsiz olarak T\u00fcrk\u00e7e Dublaj ve altyaz\u0131l\u0131 se\u00e7enekleri ile 1080P kalite izleyebilece\u011finiz yeni nesil yabanc\u0131 dizi izleme siteniz.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/Dizilla.cs3",
+        "name": "Dizilla"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.dizimom.beer&sz=%size%",
+        "fileHash": "sha256-610e6c1c985f55506ad9a01773e7428fdbd844c22777a003b7b404b7aac1d4e8",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 30841,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 11,
+        "internalName": "DiziMom",
+        "description": "Binlerce yerli yabanc\u0131 dizi ar\u015fivi, t\u00fcm sezonlar, kesintisiz b\u00f6l\u00fcmler. Sadece dizi izle, Dizimom heryerde seninle!",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziMom.cs3",
+        "name": "DiziMom"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.diziyou.one&sz=%size%",
+        "fileHash": "sha256-36475a109002b0b17476c30627dc249e357ae238f764ba32f1635723ab037ea8",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 14493,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 8,
+        "internalName": "DiziYou",
+        "description": "Diziyou en kaliteli T\u00fcrk\u00e7e dublaj ve altyaz\u0131l\u0131 yabanc\u0131 dizi izleme sitesidir. G\u00fcncel ve efsanevi dizileri 1080p Full HD kalitede izlemek i\u00e7in hemen t\u0131kla!",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/DiziYou.cs3",
+        "name": "DiziYou"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=%size%",
+        "fileHash": "sha256-8074736424fbdab6d6638f290758a0613f44d03501e1fd49faeb96032cb48151",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 17514,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 8,
+        "internalName": "FilmMakinesi",
+        "description": "Film Makinesi, en yeni ve en g\u00fcncel filmleri sitemizde full HD kalite fark\u0131 ile izleyebilirsiniz. HD film izle denildi\u011finde akla gelen en kaliteli film izleme sitesi.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FilmMakinesi.cs3",
+        "name": "FilmMakinesi"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.filmmodu.one&sz=%size%",
+        "fileHash": "sha256-faaa905f9630def4e1fa23984f350c27bea75ebc00d390bcddbcf8fc313173e6",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 15733,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 9,
+        "internalName": "FilmModu",
+        "description": "Film modun geldiyse y\u00fcksek kalitede en yeni filmleri izle, 1080p izleyebilece\u011finiz reklamsiz film sitesi.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FilmModu.cs3",
+        "name": "FilmModu"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.fullhdfilmizlesene.now&sz=%size%",
+        "fileHash": "sha256-6f1401360e06c9cc8c91f817d5e01f73f8e9d6fa43840a9163e0288f9944497f",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 32532,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 6,
+        "internalName": "FullHDFilmizlesene",
+        "description": "Sinema zevkini evinize kadar getirdik. T\u00fcrkiye'nin lider Film sitesinde, en yeni filmleri Full HD izleyin.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FullHDFilmizlesene.cs3",
+        "name": "FullHDFilmizlesene"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=fullporner.com&sz=%size%",
+        "fileHash": "sha256-8a1e3664c8943bbe7913f48fcf490b73152bc15dcf0137f73944398903eacd6b",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 13501,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 3,
+        "internalName": "FullPorner",
+        "description": "(VPN) FullPorner is the best free full length porn video site. Choose from millions of hardcore videos that stream quickly and in high quality and only full length",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FullPorner.cs3",
+        "name": "FullPorner"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.com&sz=%size%",
+        "fileHash": "sha256-210d08555ef68d6708e3c886a5ddb7357e1f76a8af4b4afe38282daa7b308eb7",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22382,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 18,
+        "internalName": "HDFilmCehennemi",
+        "description": "T\u00fcrkiye'nin en h\u0131zl\u0131 hd film izleme sitesi",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/HDFilmCehennemi.cs3",
+        "name": "HDFilmCehennemi"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=hqporner.com&sz=%size%",
+        "fileHash": "sha256-bc1c67f74e0a33d28baf12f05998bc688fab73d34e059e34bc4b661d9faecacc",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 18490,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 3,
+        "internalName": "HQPorner",
+        "description": "Truly high definition porn videos and truly for free! We're sure you'll like our best collection containing thousands of 4K, 60FPS and 1080p free HD porn videos with the hottest girls ever!",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/HQPorner.cs3",
+        "name": "HQPorner"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=selcukflix.com&sz=%size%",
+        "fileHash": "sha256-66d93640696d2e64c8a368b5190e384818ae119d01fc3777b2988cb34800d98b",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 15197,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 6,
+        "internalName": "IzleAI",
+        "description": "SelcukFlix film sa\u011flay\u0131c\u0131s\u0131",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/IzleAI.cs3",
+        "name": "IzleAI"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.now&sz=%size%",
+        "fileHash": "sha256-44fb6b5ecc2c6d143dc0bb3110390277170ba1b0e6d8b0dfca978a29d0539d18",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 16222,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 20,
+        "internalName": "JetFilmizle",
+        "description": "Binlerce Film \u0130zleme Se\u00e7ene\u011fiyle En \u0130yi Film \u0130zleme Sitesi",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/JetFilmizle.cs3",
+        "name": "JetFilmizle"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=kultfilmler.net&sz=%size%",
+        "fileHash": "sha256-9edb4222af22466317956a986fa99b76da3fdf2897a48442144c5861e9fa7a9d",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 22754,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 8,
+        "internalName": "KultFilmler",
+        "description": "K\u00fclt Filmler \u00f6zenle en iyi filmleri derler ve iyi bir altyaz\u0131l\u0131 film izleme deneyimi sunmay\u0131 ama\u00e7lar",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/KultFilmler.cs3",
+        "name": "KultFilmler"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=pornhub.com&sz=%size%",
+        "fileHash": "sha256-a58f435ed5785b54734e59c1b701e723197673d6f5cc40db2a5033b8ffe29d40",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 12076,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 1,
+        "internalName": "PornHub",
+        "description": "(VPN) Pornhub is the world\u2019s leading free porn site. Choose from millions of hardcore videos that stream quickly and in high quality, including amazing VR Porn. The largest adult site on the Internet just keeps getting better. We have more pornstars and real amateurs than anyone else. It\u2019s fast, it\u2019s free, it\u2019s Pornhub!",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/PornHub.cs3",
+        "name": "PornHub"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=rarefilmm.com&sz=%size%",
+        "fileHash": "sha256-10dc2b735059e3573df759b5b6c8456c41a429fd126244f9586bdf0ddd581b3c",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 16026,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 1,
+        "internalName": "RareFilmm",
+        "description": "The Cave of Forgotten Films",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/RareFilmm.cs3",
+        "name": "RareFilmm"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.setfilmizle.ltd&sz=%size%",
+        "fileHash": "sha256-057b5b71b57f91c8294df098ec2a4e77b7312e00b3a012153eaa7bf42392fb02",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 24298,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries"
+        ],
+        "version": 10,
+        "internalName": "SetFilmIzle",
+        "description": "Setfilmizle sitemizde, donma ya\u015famadan T\u00fcrk\u00e7e dublaj ve altyaz\u0131l\u0131 filmleri ile dizileri muhte\u015fem 1080p full HD kalitesinde izleyebilirsiniz.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SetFilmIzle.cs3",
+        "name": "SetFilmIzle"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=sezonlukdizi.cc&sz=%size%",
+        "fileHash": "sha256-085c6982a06342da53fa9e0619a8a16a128a437997b036a67e4453acac1b8f43",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 21443,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "TvSeries"
+        ],
+        "version": 3,
+        "internalName": "SezonlukDizi",
+        "description": "G\u00fcncel ve eski dizileri en iyi g\u00f6r\u00fcnt\u00fc kalitesiyle bulabilece\u011finiz yabanc\u0131 dizi izleme siteniz.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SezonlukDizi.cs3",
+        "name": "SezonlukDizi"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=sinemacc.com&sz=%size%",
+        "fileHash": "sha256-1d31908f8b08befaa311f325c2ae0b225a05cf391960d8429228d275c4d44e9b",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 17300,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 3,
+        "internalName": "SinemaCX",
+        "description": "G\u00fcncel ve en iyi yabanc\u0131 filmleri y\u00fcksek g\u00f6r\u00fcnt\u00fc kalitesinde, T\u00fcrk\u00e7e dublaj ve altyaz\u0131 se\u00e7enekleriyle filmleri full izleyin.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SinemaCX.cs3",
+        "name": "SinemaCX"
+    },
+    {
+        "iconUrl": "https://play-lh.googleusercontent.com/brwGNmr7IjA_MKk_TTPs0va10hdKE_bD_a1lnKoiMuCayW98EHpRv55edA6aEoJlmwfX",
+        "fileHash": "sha256-81b4ff2287022f6748b8f1ac5471e679bc484b1ab319f1010de58257e89dc800",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 26038,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie",
+            "TvSeries",
+            "Anime"
+        ],
+        "version": 12,
+        "internalName": "SineWix",
+        "description": "Sinewix | \u00dccretsiz Film - Dizi - Anime \u0130zleme Uygulamas\u0131.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SineWix.cs3",
+        "name": "SineWix"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=spankbang.com&sz=%size%",
+        "fileHash": "sha256-d33441529b8d61cfef898c5b600c20ecc149566b517033d39f0397de0b14efe5",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 12680,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 1,
+        "internalName": "SpankBang",
+        "description": "(VPN) SpankBang is the hottest free porn site in the world! Cum like never before and explore millions of fresh and free porn videos! Get lit on SpankBang!",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SpankBang.cs3",
+        "name": "SpankBang"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=www.turkanime.tv&sz=%size%",
+        "fileHash": "sha256-75a1e6c5a68fb90328278d3528252983aa5bf5edc883b8d64a252b33752f58e9",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 18126,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Anime"
+        ],
+        "version": 2,
+        "internalName": "TurkAnime",
+        "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/TurkAnime.cs3",
+        "name": "TurkAnime"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=uncutmaza.cc&sz=%size%",
+        "fileHash": "sha256-ee0f5300914ff98da70a49c16d585fdbcfc590c2d364e268aea43870e457e73b",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 9951,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 3,
+        "internalName": "UncutMaza",
+        "description": "(VPN) We Provide Huge Colocation of Hindi Porn (Uncut) Web Series",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/UncutMaza.cs3",
+        "name": "UncutMaza"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=movies2watch.watch&sz=%size%",
+        "fileHash": "sha256-ef550ba52181082523dfdb994481a88b4ce36862a3695859716c147df27c8663",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 19798,
+        "status": 3,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 1,
+        "internalName": "Watch2Movies",
+        "description": "!!! YAPIM A\u015eAMASINDA !!! Watch2Movies is a Free Movies streaming site with zero ads. We let you watch movies online without having to register or paying, with over 10000 movies and TV-Series. You can also Download full movies from Watch2Movies and watch it later if you want.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/Watch2Movies.cs3",
+        "name": "Watch2Movies"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=webteizle.info&sz=%size%",
+        "fileHash": "sha256-aa3b84ead35743884207d7c562337cbd5cb4fc36d455366cda375cd92e87be71",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 24248,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Movie"
+        ],
+        "version": 16,
+        "internalName": "WebteIzle",
+        "description": "Her t\u00fcrl\u00fc filmi ister dublaj ister altyaz\u0131l\u0131, en kaliteli bir \u015fekilde izleyebilece\u011finiz ar\u015fivi en geni\u015f ger\u00e7ek film izleme siteniz.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/WebteIzle.cs3",
+        "name": "WebteIzle"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=xhamster.com&sz=%size%",
+        "fileHash": "sha256-d355e1d7ae6e47b10cc09f6400d4d133927e25342aee2a80b374db7b5bcae716",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 10475,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "NSFW"
+        ],
+        "version": 1,
+        "internalName": "xHamster",
+        "description": "(VPN) 5 milyondan fazla Porno Videosunu \u00fccretsiz izleyin.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/xHamster.cs3",
+        "name": "xHamster"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=youtube.com&sz=%size%",
+        "fileHash": "sha256-a11f05114254207868dc0bc64e53978c31627318bfec79193206010e3d95dfb0",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
+        "fileSize": 16241,
+        "status": 1,
+        "language": "tr",
+        "authors": [
+            
+        ],
+        "tvTypes": [
+            "Others"
+        ],
+        "version": 4,
+        "internalName": "YouTube",
+        "description": "YouTube, izledi\u011finiz videolarla \u00f6nerilerini iyile\u015ftirir. \u0130lginizi \u00e7ekebilecek i\u00e7eriklerle dolu bir ak\u0131\u015f olu\u015fturmak i\u00e7in video izlemeye ba\u015flay\u0131n.",
+        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/YouTube.cs3",
+        "name": "YouTube"
+    }
+]
