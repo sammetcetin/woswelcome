@@ -31,13 +31,58 @@ class DiziBox : MainAPI() {
     private val cloudflareKiller by lazy { CloudflareKiller() }
     private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
 
+    private val browserHeaders = mapOf(
+        "User-Agent"      to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Accept"          to "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language" to "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7"
+    )
+
+    private val playerCookies = mapOf(
+        "LockUser"      to "true",
+        "isTrustedUser" to "true",
+        "dbxu"          to "1722403730363"
+    )
+
+    private fun extractVideoIframeSrc(doc: org.jsoup.nodes.Document): String? {
+        val selectors = listOf(
+            "div#video-area iframe",
+            "div.video-container iframe",
+            "div.video-wrapper iframe",
+            "iframe[src*='/player/']"
+        )
+        for (sel in selectors) {
+            val el = doc.selectFirst(sel) ?: continue
+            var src = el.attr("src").takeIf { it.isNotBlank() && !it.contains("about:blank") }
+                ?: el.attr("data-src").takeIf { it.isNotBlank() && !it.contains("about:blank") }
+                ?: continue
+            if (src.startsWith("//")) src = "https:$src"
+            if (src.isNotBlank()) return src
+        }
+        return null
+    }
+
     class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request  = chain.request()
             val response = chain.proceed(request)
-            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
 
-            if (doc.text().contains("Güvenlik taramasından geçiriliyorsunuz. Lütfen bekleyiniz..")) {
+            if (response.code == 403) {
+                return cloudflareKiller.intercept(chain)
+            }
+
+            val bodyStr = try { response.peekBody(1024 * 1024).string() } catch (_: Exception) { "" }
+            val doc     = Jsoup.parse(bodyStr)
+            val txt     = doc.text()
+            val lower   = bodyStr.lowercase()
+
+            if (txt.contains("Güvenlik taramasından geçiriliyorsunuz. Lütfen bekleyiniz..") ||
+                txt.contains("Just a moment") ||
+                txt.contains("Attention Required") ||
+                lower.contains("cf-challenge") ||
+                lower.contains("cf-mitigated") ||
+                lower.contains("challenge-platform") ||
+                lower.contains("just a moment")
+            ) {
                 return cloudflareKiller.intercept(chain)
             }
 
@@ -175,20 +220,21 @@ class DiziBox : MainAPI() {
         @Suppress("NAME_SHADOWING") var iframe = iframe
 
         if (iframe.contains("/player/king/king.php")) {
+            // Not: king (DBX Pro) şu an 200 + 0 byte dönüyor (ölü player). Boşsa sessizce geç.
             iframe = iframe.replace("king.php?v=", "king.php?wmode=opaque&v=")
-            val subDoc = app.get(
-                iframe,
-                referer     = data,
-                cookies     = mapOf(
-                    "LockUser"      to "true",
-                    "isTrustedUser" to "true",
-                    "dbxu"          to "1722403730363"
-                ),
-                interceptor = interceptor
-            ).document
+            val subDoc = try {
+                app.get(
+                    iframe,
+                    referer     = data,
+                    cookies     = playerCookies,
+                    headers     = browserHeaders,
+                    interceptor = interceptor
+                ).document
+            } catch (_: Exception) { return false }
+            if (subDoc.html().isBlank()) return false
             val subFrame = subDoc.selectFirst("div#Player iframe")?.attr("src") ?: return false
 
-            val iDoc          = app.get(subFrame, referer="${mainUrl}/").text
+            val iDoc = try { app.get(subFrame, referer="${mainUrl}/", headers=browserHeaders).text } catch (_: Exception) { return false }
             val cryptData     = Regex("""CryptoJS\.AES\.decrypt\("(.*)","""").find(iDoc)?.groupValues?.get(1) ?: return false
             val cryptPass     = Regex("""","(.*)"\);""").find(iDoc)?.groupValues?.get(1) ?: return false
             val decryptedData = CryptoJS.decrypt(cryptPass, cryptData)
@@ -208,16 +254,15 @@ class DiziBox : MainAPI() {
 
         } else if (iframe.contains("/player/moly/moly.php")) {
             iframe = iframe.replace("moly.php?h=", "moly.php?wmode=opaque&h=")
-            var subDoc = app.get(
-                iframe,
-                referer     = data,
-                cookies     = mapOf(
-                    "LockUser"      to "true",
-                    "isTrustedUser" to "true",
-                    "dbxu"          to "1722403730363"
-                ),
-                interceptor = interceptor
-            ).document
+            var subDoc = try {
+                app.get(
+                    iframe,
+                    referer     = data,
+                    cookies     = playerCookies,
+                    headers     = browserHeaders,
+                    interceptor = interceptor
+                ).document
+            } catch (_: Exception) { return false }
 
             val atobData = Regex("""unescape\("(.*)"\)""").find(subDoc.html())?.groupValues?.get(1)
             if (atobData != null) {
@@ -232,16 +277,15 @@ class DiziBox : MainAPI() {
 
         } else if (iframe.contains("/player/haydi.php")) {
             iframe = iframe.replace("haydi.php?v=", "haydi.php?wmode=opaque&v=")
-            var subDoc = app.get(
-                iframe,
-                referer     = data,
-                cookies     = mapOf(
-                    "LockUser"      to "true",
-                    "isTrustedUser" to "true",
-                    "dbxu"          to "1722403730363"
-                ),
-                interceptor = interceptor
-            ).document
+            var subDoc = try {
+                app.get(
+                    iframe,
+                    referer     = data,
+                    cookies     = playerCookies,
+                    headers     = browserHeaders,
+                    interceptor = interceptor
+                ).document
+            } catch (_: Exception) { return false }
 
             val atobData = Regex("""unescape\("(.*)"\)""").find(subDoc.html())?.groupValues?.get(1)
             if (atobData != null) {
@@ -260,35 +304,37 @@ class DiziBox : MainAPI() {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("DZBX", "data » $data")
-        val document = app.get(
-            data,
-            cookies     = mapOf(
-                "LockUser"      to "true",
-                "isTrustedUser" to "true",
-                "dbxu"          to "1722403730363"
-            ),
-            interceptor = interceptor
-        ).document
-        var iframe = document.selectFirst("div#video-area iframe")?.attr("src")?: return false
-        Log.d("DZBX", "iframe » $iframe")
-
-        iframeDecode(data, iframe, subtitleCallback, callback)
-
-        document.select("div.video-toolbar option[value]").forEach {
-            val altLink = it.attr("value")
-            val subDoc  = app.get(
-                altLink,
-                cookies     = mapOf(
-                    "LockUser"      to "true",
-                    "isTrustedUser" to "true",
-                    "dbxu"          to "1722403730363"
-                ),
+        val document = try {
+            app.get(
+                data,
+                cookies     = playerCookies,
+                headers     = browserHeaders,
+                referer     = "${mainUrl}/",
                 interceptor = interceptor
             ).document
-            iframe = subDoc.selectFirst("div#video-area iframe")?.attr("src")?: return false
-            Log.d("DZBX", "iframe » $iframe")
+        } catch (_: Exception) { return false }
 
-            iframeDecode(data, iframe, subtitleCallback, callback)
+        var iframe = extractVideoIframeSrc(document) ?: return false
+        Log.d("DZBX", "iframe » $iframe")
+
+        // Ana player ölü olabilir (king şu an boş dönüyor); hatayı yut, alternatiflere devam et.
+        try { iframeDecode(data, iframe, subtitleCallback, callback) } catch (_: Exception) { }
+
+        document.select("div.video-toolbar option[value], select.woca-linkpages-dd option[value]").forEach {
+            val altLink = fixUrlNull(it.attr("value")) ?: return@forEach
+            val subDoc  = try {
+                app.get(
+                    altLink,
+                    cookies     = playerCookies,
+                    headers     = browserHeaders,
+                    referer     = data,
+                    interceptor = interceptor
+                ).document
+            } catch (_: Exception) { return@forEach }
+            val altIframe = extractVideoIframeSrc(subDoc) ?: return@forEach
+            Log.d("DZBX", "iframe » $altIframe")
+
+            try { iframeDecode(data, altIframe, subtitleCallback, callback) } catch (_: Exception) { }
         }
 
         return true

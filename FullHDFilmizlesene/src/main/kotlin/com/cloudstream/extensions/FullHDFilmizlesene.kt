@@ -130,10 +130,11 @@ class FullHDFilmizlesene : MainAPI() {
     }
 
     private fun getVideoLinks(document: Document): List<Map<String, String>> {
-        val scriptElement = document.select("script").firstOrNull { it.data().isNotEmpty() }
-        val scriptContent = scriptElement?.data()?.trim() ?: return emptyList()
-
-        val scxData         = Regex("scx = (.*?);").find(scriptContent)?.groupValues?.get(1) ?: return emptyList()
+        val scxData = document.select("script")
+            .mapNotNull { el ->
+                val content = el.data()?.trim()?.takeIf { it.contains("var scx") || it.contains("scx =") } ?: return@mapNotNull null
+                Regex("scx\\s*=\\s*(\\{.*?\\});").find(content)?.groupValues?.get(1)
+            }.firstOrNull() ?: return emptyList()
         val scxMap: SCXData = jacksonObjectMapper().readValue(scxData)
         val keys             = listOf("atom", "advid", "advidprox", "proton", "fast", "fastly", "tr", "en")
 

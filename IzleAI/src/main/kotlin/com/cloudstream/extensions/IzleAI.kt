@@ -123,35 +123,198 @@ class IzleAI : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit,
     ): Boolean {
-        val payload = decodePage(app.get(data).document) ?: return false
+        val document = try {
+            app.get(data).document
+        } catch (_: Exception) {
+            return false
+        }
+        val payload = decodePage(document) ?: return false
         val related = payload.path("RelatedResults")
-        val fields = related.fields()
-        val links = linkedSetOf<String>()
+        val blobs = linkedSetOf<String>()
 
+        val fields = related.fields()
         while (fields.hasNext()) {
             val entry = fields.next()
-            if (!entry.key.startsWith("getMoviePartSourcesById_")) continue
+            if (!entry.key.startsWith("getMoviePartSourcesById_") && entry.key != "getMovieSourcesById") continue
             entry.value.path("result").forEach { source ->
-                val sourceHtml = source.path("source_content").asText()
-                val rawUrl = Jsoup.parseBodyFragment(sourceHtml)
-                    .selectFirst("iframe[src]")
-                    ?.attr("src")
-                    ?.trim()
-                    .orEmpty()
-                val iframe = when {
-                    rawUrl.startsWith("//") -> "https:$rawUrl"
-                    rawUrl.startsWith("http://") || rawUrl.startsWith("https://") -> rawUrl
-                    rawUrl.isNotEmpty() -> fixUrl(rawUrl)
-                    else -> null
-                }
-                if (iframe != null) links += iframe
+                source.path("source_content").asText()
+                    .takeIf { it.isNotBlank() }
+                    ?.let { blobs += it }
             }
         }
 
-        links.forEach { iframe ->
-            loadExtractor(iframe, data, subtitleCallback, callback)
+        // Yedek secici: sifresi cozulmus yukun tamaminda iframe / dogrudan medya tara.
+        if (blobs.isEmpty()) {
+            val raw = payload.toString()
+            Regex("""<iframe[^>]+src\s*=\s*["']([^"']+)["']""", RegexOption.IGNORE_CASE)
+                .findAll(raw).forEach { blobs += it.groupValues[1] }
+            Regex("""https?://[^\s"'<>\\]+\.m3u8[^\s"'<>\\]*""")
+                .findAll(raw).forEach { blobs += it.value }
+            Regex("""https?://[^\s"'<>\\]+\.mp4[^\s"'<>\\]*""")
+                .findAll(raw).forEach { blobs += it.value }
         }
-        return links.isNotEmpty()
+
+        var emitted = false
+        val countingCallback: (ExtractorLink) -> Unit = {
+            emitted = true
+            callback(it)
+        }
+
+        blobs.forEach { blob ->
+            try {
+                val trimmed = blob.trim()
+                val iframe = when {
+                    trimmed.startsWith("http", ignoreCase = true) -> trimmed
+                    else -> Jsoup.parseBodyFragment(blob)
+                        .selectFirst("iframe[src], source[src], video[src]")
+                        ?.attr("src")
+                        ?.trim()
+                        .orEmpty()
+                        .let { rawUrl ->
+                            when {
+                                rawUrl.startsWith("//") -> "https:$rawUrl"
+                                rawUrl.startsWith("http://") || rawUrl.startsWith("https://") -> rawUrl
+                                rawUrl.isNotEmpty() -> fixUrl(rawUrl)
+                                else -> null
+                            }
+                        }
+                } ?: return@forEach
+
+                if (iframe.contains("iframe.php", ignoreCase = true)) {
+                    if (resolvePichiveIframe(iframe, data, subtitleCallback, countingCallback)) return@forEach
+                }
+                if (iframe.contains(".m3u8")) {
+                    countingCallback(
+                        newExtractorLink(name, name, iframe, ExtractorLinkType.M3U8) {
+                            this.referer = data
+                            this.quality = Qualities.Unknown.value
+                        },
+                    )
+                    return@forEach
+                }
+                if (iframe.contains(".mp4")) {
+                    countingCallback(
+                        newExtractorLink(name, name, iframe, ExtractorLinkType.VIDEO) {
+                            this.referer = data
+                            this.quality = Qualities.Unknown.value
+                        },
+                    )
+                    return@forEach
+                }
+                loadExtractor(iframe, data, subtitleCallback, countingCallback)
+            } catch (_: Exception) {
+            }
+        }
+        return emitted
+    }
+
+    /**
+     * Pichive/DPlayer ailesi iframe'leri (sn.dplayer*.site, *.pichive.online):
+     * iframe HTML'indeki window.openPlayer('<token>', ...) jetonuyla
+     * source2.php'den gercek master.m3u8 adresi alinir. Jenerik
+     * loadExtractor bu hostlari tanimadigi icin burada elle cozuluyor.
+     */
+    private suspend fun resolvePichiveIframe(
+        iframeUrl: String,
+        pageUrl: String,
+        subtitleCallback: (SubtitleFile) -> Unit,
+        callback: (ExtractorLink) -> Unit,
+    ): Boolean {
+        try {
+            val html = app.get(iframeUrl, referer = pageUrl).text
+            val token = Regex("""openPlayer\('([^']{64,})'""")
+                .find(html)?.groupValues?.get(1)?.takeIf { it.isNotBlank() }
+                ?: return false
+
+            Regex("""\{[^{}]*"file"\s*:\s*"(https:[^"]+?\.vtt[^"]*)"[^{}]*\}""").findAll(html).forEach { match ->
+                try {
+                    val obj = match.value
+                    val file = Regex(""""file"\s*:\s*"(https:[^"]+?\.vtt[^"]*)"""")
+                        .find(obj)?.groupValues?.get(1)?.replace("\\/", "/")
+                        ?: return@forEach
+                    val lang = Regex(""""lang"\s*:\s*"([^"]*)"""")
+                        .find(obj)?.groupValues?.get(1)?.takeIf { it.isNotBlank() }
+                        ?: Regex(""""label"\s*:\s*"((?:\\u[0-9a-fA-F]{4}|[^"\\])*)"""")
+                            .find(obj)?.groupValues?.get(1)
+                            ?.let { unescapeJson(it) }
+                            ?.takeIf { it.isNotBlank() }
+                        ?: "Türkçe"
+                    subtitleCallback(SubtitleFile(lang, fixUrl(file)))
+                } catch (_: Exception) {
+                }
+            }
+
+            val origin = Regex("""^(https?://[^/]+)""").find(iframeUrl)?.groupValues?.get(1)
+                ?: return false
+            val apiUrl = "$origin/source2.php?v=" + URLEncoder.encode(token, Charsets.UTF_8.name())
+            val root = try {
+                mapper.readTree(app.get(apiUrl, referer = iframeUrl).text)
+            } catch (_: Exception) {
+                return false
+            }
+            if (!root.path("state").asBoolean(false)) return false
+
+            var found = false
+            root.path("playlist").forEach { item ->
+                item.path("sources").forEach { source ->
+                    val file = source.path("file").asText()
+                        .takeIf { it.isNotBlank() } ?: return@forEach
+                    val master = fixUrl(file.replace("\\/", "/").replace("m.php", "master.m3u8"))
+                    callback(
+                        newExtractorLink(name, name, master, ExtractorLinkType.M3U8) {
+                            this.referer = iframeUrl
+                            this.quality = Qualities.Unknown.value
+                        },
+                    )
+                    found = true
+                }
+            }
+            // Yedek: akan yukte cıplak master/m3u8 adresi varsa onu da dene.
+            if (!found) {
+                Regex("""https?://[^\s"'<>\\]+\.m3u8[^\s"'<>\\]*""").findAll(root.toString()).forEach {
+                    callback(
+                        newExtractorLink(name, name, fixUrl(it.value), ExtractorLinkType.M3U8) {
+                            this.referer = iframeUrl
+                            this.quality = Qualities.Unknown.value
+                        },
+                    )
+                    found = true
+                }
+            }
+            return found
+        } catch (_: Exception) {
+            return false
+        }
+    }
+
+    private fun unescapeJson(s: String): String {
+        val out = StringBuilder()
+        var i = 0
+        while (i < s.length) {
+            val c = s[i]
+            if (c == '\\' && i + 1 < s.length) {
+                when (s[i + 1]) {
+                    'u' -> {
+                        if (i + 5 < s.length) {
+                            val code = s.substring(i + 2, i + 6).toIntOrNull(16)
+                            if (code != null) out.append(code.toChar()) else out.append(s.substring(i, i + 6))
+                            i += 6
+                        } else {
+                            out.append('u'); i += 2
+                        }
+                    }
+                    '/' -> { out.append('/'); i += 2 }
+                    '"' -> { out.append('"'); i += 2 }
+                    '\\' -> { out.append('\\'); i += 2 }
+                    'n' -> { out.append('\n'); i += 2 }
+                    else -> { out.append(s[i + 1]); i += 2 }
+                }
+            } else {
+                out.append(c)
+                i++
+            }
+        }
+        return out.toString()
     }
 
     private fun decodePage(document: Document): JsonNode? {

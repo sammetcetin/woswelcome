@@ -8,17 +8,27 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 open class HDPlayerSystem : ExtractorApi() {
     override val name            = "HDPlayerSystem"
-    override val mainUrl         = "https://hdplayersystem.live"
+    override val mainUrl         = "https://hdplayersystem.com"
     override val requiresReferer = true
 
     override suspend fun getUrl(url: String, referer: String?, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit) {
         val extRef  = referer ?: ""
-        val vidId   = if (url.contains("video/")) {
-            url.substringAfter("video/")
-        } else {
-            url.substringAfter("?data=")
+        // Site artık /embed/<id> kullanıyor (eski: video/<id> ve ?data=<id>)
+        val vidId   = when {
+            url.contains("/embed/") -> url.substringAfter("/embed/").substringBefore("?").substringBefore("/").substringBefore("#")
+            url.contains("video/")  -> url.substringAfter("video/").substringBefore("?").substringBefore("/").substringBefore("#")
+            url.contains("?data=")  -> url.substringAfter("?data=").substringBefore("&")
+            url.contains("data=")   -> url.substringAfter("data=").substringBefore("&")
+            else                    -> url.substringAfterLast("/").substringBefore("?").substringBefore("#")
+        }.trim()
+        if (vidId.isBlank()) throw ErrorLoadingException("hdplayersystem: empty video id ($url)")
+        // Gömülü host ne ise POST oraya (com/live uyumu)
+        val host = when {
+            url.contains("hdplayersystem.live") -> "https://hdplayersystem.live"
+            url.contains("hdplayersystem.com")  -> "https://hdplayersystem.com"
+            else                                -> mainUrl
         }
-        val postUrl = "${mainUrl}/player/index.php?data=${vidId}&do=getVideo"
+        val postUrl = "${host}/player/index.php?data=${vidId}&do=getVideo"
         Log.d("Provider_${this.name}", "postUrl » $postUrl")
 
         val response = app.post(

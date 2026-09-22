@@ -6,9 +6,9 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class Odnoklassniki : ExtractorApi() {
-    override val name            = "Odnoklassniki"
-    override val mainUrl         = "https://odnoklassniki.ru"
+open class KultOdnoklassniki : ExtractorApi() {
+    override val name            = "KultOdnoklassniki"
+    override val mainUrl         = "https://ok.ru"
     override val requiresReferer = false
 
     override suspend fun getUrl(url: String, referer: String?, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit) {

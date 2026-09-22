@@ -10,5 +10,6 @@ class KultFilmlerPlugin: Plugin() {
         registerMainAPI(KultFilmler())
         registerExtractorAPI(YildizKisaFilm())
         registerExtractorAPI(VidPapiExtractor())
+        registerExtractorAPI(KultOdnoklassniki())
     }
 }

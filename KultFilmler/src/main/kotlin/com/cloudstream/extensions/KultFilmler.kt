@@ -116,10 +116,14 @@ class KultFilmler : MainAPI() {
                 val epName = it.selectFirst("h4")?.text()?.trim() ?: return@mapNotNull null
                 val match = Regex("""(\d+)\.\s*Sezon\s+(\d+)\.\s*Bölüm""")
                     .find(epName)
+                val hrefMatch = Regex("""(\d+)-sezon-(\d+)-bolum""").find(epHref)
                 newEpisode(epHref) {
                     name = epName
                     season = match?.groupValues?.get(1)?.toIntOrNull()
+                        ?: hrefMatch?.groupValues?.get(1)?.toIntOrNull()
                     episode = match?.groupValues?.get(2)?.toIntOrNull()
+                        ?: hrefMatch?.groupValues?.get(2)?.toIntOrNull()
+                        ?: Regex("""^[Bb](\d+)""").find(epName)?.groupValues?.get(1)?.toIntOrNull()
                 }
             }
             return newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {

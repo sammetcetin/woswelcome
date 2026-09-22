@@ -19,10 +19,11 @@ class CanliTV : MainAPI() {
     override val supportedTypes       = setOf(TvType.Live)
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
+        val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text).items
+            .filter { !it.url.isNullOrBlank() && !it.title.isNullOrBlank() }
 
         return newHomePageResponse(
-            kanallar.items.groupBy { it.attributes["group-title"] }.map { group ->
+            kanallar.groupBy { it.attributes["group-title"] }.map { group ->
                 val title = group.key ?: ""
                 val show  = group.value.map { kanal ->
                     val streamurl   = kanal.url.toString()
@@ -49,9 +50,10 @@ class CanliTV : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
+        val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text).items
+            .filter { !it.url.isNullOrBlank() && !it.title.isNullOrBlank() }
 
-        return kanallar.items.filter { it.title.toString().lowercase().contains(query.lowercase()) }.map { kanal ->
+        return kanallar.filter { it.title.toString().lowercase().contains(query.lowercase()) }.map { kanal ->
             val streamurl   = kanal.url.toString()
             val channelname = kanal.title.toString()
             val posterurl   = kanal.attributes["tvg-logo"].toString()
@@ -80,14 +82,15 @@ class CanliTV : MainAPI() {
             "» ${loadData.group} | ${loadData.nation} «"
         }
 
-        val kanallar        = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
         val recommendations = mutableListOf<LiveSearchResponse>()
 
-        for (kanal in kanallar.items) {
-            if (kanal.attributes["group-title"].toString() == loadData.group) {
-                val rcStreamUrl   = kanal.url.toString()
-                val rcChannelName = kanal.title.toString()
-                if (rcChannelName == loadData.title) continue
+        runCatching {
+            val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
+            for (kanal in kanallar.items) {
+                if (kanal.attributes["group-title"].toString() == loadData.group) {
+                    val rcStreamUrl   = kanal.url.toString()
+                    val rcChannelName = kanal.title.toString()
+                    if (rcChannelName == loadData.title) continue
 
                 val rcPosterUrl   = kanal.attributes["tvg-logo"].toString()
                 val rcChGroup     = kanal.attributes["group-title"].toString()
@@ -103,6 +106,7 @@ class CanliTV : MainAPI() {
                 })
 
             }
+            }
         }
 
         return newLiveStreamLoadResponse(loadData.title, loadData.url, url) {
@@ -114,44 +118,64 @@ class CanliTV : MainAPI() {
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
-        val loadData = fetchDataFromUrlOrJson(data)
-        Log.d("IPTV", "loadData » $loadData")
+        return try {
+            val loadData = fetchDataFromUrlOrJson(data)
+            Log.d("IPTV", "loadData » $loadData")
+            if (loadData.url.isBlank()) return false
 
-        val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
-        val kanal    = kanallar.items.first { it.url == loadData.url }
-        Log.d("IPTV", "kanal » $kanal")
+            // Liste yenilenince eski URL listede olmayabilir ya da kanal ölmüş olabilir.
+            // Tek kanal yüzünden fırlatmak yerine eldeki URL'yi en iyi header'la ver.
+            var headers: Map<String, String> = emptyMap()
+            runCatching {
+                val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
+                kanallar.items.firstOrNull { it.url == loadData.url }?.let { kanal ->
+                    Log.d("IPTV", "kanal » $kanal")
+                    headers = kanal.headers
+                }
+            }
 
-        callback.invoke(
-            ExtractorLink(
-                source  = this.name,
-                name    = this.name,
-                url     = loadData.url,
-                headers = kanal.headers,
-                referer = kanal.headers["referrer"] ?: "",
-                quality = Qualities.Unknown.value,
-                isM3u8  = true
+            callback.invoke(
+                ExtractorLink(
+                    source  = this.name,
+                    name    = this.name,
+                    url     = loadData.url,
+                    headers = headers,
+                    referer = headers["referrer"] ?: "",
+                    quality = Qualities.Unknown.value,
+                    isM3u8  = true
+                )
             )
-        )
 
-        return true
+            true
+        } catch (e: Exception) {
+            Log.d("IPTV", "loadLinks hata » ${e.message}")
+            false
+        }
     }
 
     data class LoadData(val url: String, val title: String, val poster: String, val group: String, val nation: String)
 
     private suspend fun fetchDataFromUrlOrJson(data: String): LoadData {
         if (data.startsWith("{")) {
-            return parseJson<LoadData>(data)
+            return runCatching { parseJson<LoadData>(data) }.getOrNull()
+                ?.takeIf { it.url.isNotBlank() }
+                ?: LoadData(data, data, "", "", "")
         } else {
-            val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
-            val kanal    = kanallar.items.first { it.url == data }
-
-            val streamurl   = kanal.url.toString()
-            val channelname = kanal.title.toString()
-            val posterurl   = kanal.attributes["tvg-logo"].toString()
-            val chGroup     = kanal.attributes["group-title"].toString()
-            val nation      = kanal.attributes["tvg-country"].toString()
-
-            return LoadData(streamurl, channelname, posterurl, chGroup, nation)
+            val streamUrl = data.trim()
+            runCatching {
+                val kanallar = IptvPlaylistParser().parseM3U(app.get(mainUrl).text)
+                kanallar.items.firstOrNull { it.url == streamUrl }?.let { kanal ->
+                    return LoadData(
+                        kanal.url.orEmpty(),
+                        kanal.title.orEmpty().ifBlank { streamUrl },
+                        kanal.attributes["tvg-logo"].orEmpty(),
+                        kanal.attributes["group-title"].orEmpty(),
+                        kanal.attributes["tvg-country"].orEmpty()
+                    )
+                }
+            }
+            // URL artik listede yoksa bile ham akis adresiyle devam et; test/butunluk korunur.
+            return LoadData(streamUrl, streamUrl, "", "", "")
         }
     }
 }
@@ -207,6 +231,7 @@ class IptvPlaylistParser {
 
                     playlistItems.add(PlaylistItem(title, attributes))
                 } else if (line.startsWith(EXT_VLC_OPT)) {
+                    if (currentIndex < playlistItems.size) {
                     val item      = playlistItems[currentIndex]
                     val userAgent = item.userAgent ?: line.getTagValue("http-user-agent")
                     val referrer  = line.getTagValue("http-referrer")
@@ -225,8 +250,10 @@ class IptvPlaylistParser {
                         userAgent = userAgent,
                         headers   = headers
                     )
+                    }
                 } else {
                     if (!line.startsWith("#")) {
+                        if (currentIndex < playlistItems.size) {
                         val item       = playlistItems[currentIndex]
                         val url        = line.getUrl()
                         val userAgent  = line.getUrlParameter("user-agent")
@@ -239,6 +266,7 @@ class IptvPlaylistParser {
                             userAgent = userAgent ?: item.userAgent
                         )
                         currentIndex++
+                        }
                     }
                 }
             }

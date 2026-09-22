@@ -102,29 +102,66 @@ class DiziMom : MainAPI() {
         }
     }
 
+    private fun extractMomIframeSrc(doc: org.jsoup.nodes.Document): String? {
+        val selectors = listOf(
+            "div.video p iframe",
+            "div.video iframe",
+            "div.video-container iframe",
+            "div.dizialani iframe",
+            "iframe[data-src]"
+        )
+        for (sel in selectors) {
+            val el = doc.selectFirst(sel) ?: continue
+            var src = el.attr("src").takeIf { it.isNotBlank() && !it.contains("about:blank") }
+                ?: el.attr("data-src").takeIf { it.isNotBlank() && !it.contains("about:blank") }
+                ?: el.attr("data-lazy-src").takeIf { it.isNotBlank() && !it.contains("about:blank") }
+                ?: continue
+            if (src.startsWith("//")) src = "https:$src"
+            if (src.isNotBlank()) return src
+        }
+        // JSON-LD gömülü oynatıcı (lazy-load sonrası yedek)
+        Regex(""""embedUrl"\s*:\s*"([^"]+)"""").find(doc.html())?.groupValues?.get(1)?.let {
+            val url = it.replace("\\/", "/").trim()
+            if (url.isNotBlank() && !url.contains("about:blank")) return url
+        }
+        return null
+    }
+
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("DZM", "data » $data")
 
         val ua = mapOf("User-Agent" to "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36")
 
-        val document = app.get(data, headers=ua).document
+        val document = try { app.get(data, headers=ua, referer="${mainUrl}/").document } catch (_: Exception) { return false }
 
-        val iframes     = mutableListOf<String>()
-        val mainIframe = document.selectFirst("div.video p iframe")?.attr("src") ?: return false
+        val iframes = mutableListOf<String>()
+        val mainIframe = extractMomIframeSrc(document) ?: return false
         iframes.add(mainIframe)
 
-        document.select("div.sources a").forEach {
-            val subDocument = app.get(it.attr("href"), headers=ua).document
-            val subIframe   = subDocument.selectFirst("div.video p iframe")?.attr("src") ?: return@forEach
-
-            iframes.add(subIframe)
+        // Site artık "div.sources" dönmüyor (boş diziplus_sources); birden çok seçici dene.
+        val altLinks = mutableSetOf<String>()
+        document.select("div.sources a, div.diziplus_sources a, div.source-list a, div.video-sources a, div.sources option[value]").forEach {
+            val href = it.attr("href").takeIf { h -> h.isNotBlank() }
+                ?: it.attr("value").takeIf { h -> h.isNotBlank() }
+                ?: return@forEach
+            fixUrlNull(href)?.let { altLinks.add(it) }
         }
 
-        for (iframe in iframes) {
+        for (link in altLinks) {
+            try {
+                val subDocument = app.get(link, headers=ua, referer=data).document
+                extractMomIframeSrc(subDocument)?.let { iframes.add(it) }
+            } catch (_: Exception) { }
+        }
+
+        var anyOk = false
+        for (iframe in iframes.distinct()) {
             Log.d("DZM", "iframe » $iframe")
-            loadExtractor(iframe, "${mainUrl}/", subtitleCallback, callback)
+            try {
+                if (loadExtractor(fixUrl(iframe), "${mainUrl}/", subtitleCallback, callback)) anyOk = true
+            } catch (_: Exception) { }
         }
 
-        return true
+        return anyOk || iframes.isNotEmpty()
     }
 }

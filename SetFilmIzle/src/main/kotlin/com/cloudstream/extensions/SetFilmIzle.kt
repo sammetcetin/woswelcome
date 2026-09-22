@@ -202,32 +202,64 @@ class SetFilmIzle : MainAPI() {
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit,
     ): Boolean {
-        val document = app.get(data).document
-        val player = document.selectFirst("div.fplayer[data-post-id]") ?: return false
-        val postId = player.attr("data-post-id").takeIf { it.isNotBlank() } ?: return false
-        val nonce = Regex("""nonces:\s*\{video:\s*"([^"]+)"""")
-            .find(document.html())?.groupValues?.get(1) ?: return false
-        var found = false
+        val document = try {
+            app.get(data).document
+        } catch (_: Exception) {
+            return false
+        }
+        var emitted = false
+        val countingCallback: (ExtractorLink) -> Unit = {
+            emitted = true
+            callback(it)
+        }
 
-        player.select("button.fsrc[data-player-name]").forEach { element ->
+        val player = document.selectFirst("div.fplayer[data-post-id]")
+            ?: document.selectFirst("[data-post-id]")
+        if (player == null) {
+            // Yedek: tema degismisse dogrudan gomulu oynatici iframe'lerini dene.
+            document.select("iframe[src]").mapNotNull { fixUrlNull(it.attr("src")) }
+                .filter { it.contains("setplay") || it.contains("fastplay") || it.contains("explay") }
+                .forEach { iframe ->
+                    try {
+                        loadExtractor(iframe, data, subtitleCallback, countingCallback)
+                    } catch (_: Exception) {
+                    }
+                }
+            return emitted
+        }
+        val postId = player.attr("data-post-id").takeIf { it.isNotBlank() } ?: return emitted
+        val nonce = Regex("""nonces:\s*\{\s*video:\s*"([^"]+)"""")
+            .find(document.html())?.groupValues?.get(1)?.takeIf { it.isNotBlank() }
+            ?: return emitted
+
+        val buttons = player.select("button.fsrc[data-player-name]")
+            .ifEmpty { player.select("[data-player-name]") }
+        buttons.forEach { element ->
             val playerName = element.attr("data-player-name").takeIf { it.isNotBlank() }
                 ?: return@forEach
             val partKey = element.attr("data-part-key")
-            val response = runCatching {
-                sendMultipartRequest(nonce, postId, playerName, partKey, data)
-            }.getOrNull() ?: return@forEach
-            response.use {
-                val payload = runCatching { JSONObject(it.body.string()) }.getOrNull()
-                    ?: return@forEach
-                val responseData = payload.optJSONObject("data") ?: return@forEach
-                val sourceUrl = responseData.optJSONObject("stream")?.optString("url")
-                    ?.takeIf { url -> url.isNotBlank() }
-                    ?: responseData.optString("url").takeIf { url -> url.isNotBlank() }
-                    ?: return@forEach
-                loadExtractor(sourceUrl, data, subtitleCallback, callback)
-                found = true
+            try {
+                val response = try {
+                    sendMultipartRequest(nonce, postId, playerName, partKey, data)
+                } catch (_: Exception) {
+                    return@forEach
+                }
+                response.use {
+                    val payload = try {
+                        JSONObject(it.body.string())
+                    } catch (_: Exception) {
+                        return@forEach
+                    }
+                    val responseData = payload.optJSONObject("data") ?: return@forEach
+                    val sourceUrl = responseData.optJSONObject("stream")?.optString("url")
+                        ?.takeIf { url -> url.isNotBlank() }
+                        ?: responseData.optString("url").takeIf { url -> url.isNotBlank() }
+                        ?: return@forEach
+                    loadExtractor(sourceUrl, data, subtitleCallback, countingCallback)
+                }
+            } catch (_: Exception) {
             }
         }
-        return found
+        return emitted
     }
 }
