@@ -28,10 +28,25 @@ jobs:
 
       - name: Dağıtım dalını al
         uses: actions/checkout@v4.2.2
+        continue-on-error: true
         with:
           ref: builds
           path: builds
           fetch-depth: 0
+
+      - name: Dağıtım dalı yoksa boş hazırla
+        shell: bash
+        run: |
+          if [ ! -d "$GITHUB_WORKSPACE/builds/.git" ]; then
+            rm -rf "$GITHUB_WORKSPACE/builds"
+            mkdir -p "$GITHUB_WORKSPACE/builds"
+            cd "$GITHUB_WORKSPACE/builds"
+            git init -b builds
+            git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+            if git fetch origin builds; then
+              git reset --hard FETCH_HEAD
+            fi
+          fi
 
       - name: JDK 17 ayarla
         uses: actions/setup-java@v4.6.0
