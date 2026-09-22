@@ -7,7 +7,7 @@ CloudStream için Türkçe içerik sağlayıcılarından oluşan çok modüllü 
 CloudStream → Ayarlar → Eklentiler → Depo ekle alanına şunu yapıştır:
 
 ```text
-woswelcome
+woswelcom
 ```
 
 ## Yerel derleme
