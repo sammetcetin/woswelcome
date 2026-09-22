@@ -1,7 +1,6 @@
-version = 4
+version = 5
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "tr"
     description = "En Güncel Kore Dizileri izleme Sitesi"
 
@@ -13,6 +12,6 @@ cloudstream {
      * 3: Beta only
     **/
     status  = 1 // will be 3 if unspecified
-    tvTypes = listOf("AsianDrama")
-    iconUrl = "https://www.google.com/s2/favicons?domain=https://dizikorea.vip&sz=%size%"
+    tvTypes = listOf("AsianDrama", "Movie")
+    iconUrl = "https://www.google.com/s2/favicons?domain=https://dizikorea3.com&sz=%size%"
 }

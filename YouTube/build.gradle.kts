@@ -1,7 +1,6 @@
 version = 4
 
 cloudstream {
-    authors     = listOf("Cloudburst", "keyiflerolsun")
     language    = "tr"
     description = "YouTube, izlediğiniz videolarla önerilerini iyileştirir. İlginizi çekebilecek içeriklerle dolu bir akış oluşturmak için video izlemeye başlayın."
 

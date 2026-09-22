@@ -1,0 +1,38 @@
+name: Sağlayıcı Sağlık Kontrolü
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  saglik:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4.2.2
+
+      - name: Python ayarla
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sağlık taramasını çalıştır
+        run: |
+          python scripts/provider_health.py \
+            --json health-report.json \
+            --markdown health-report.md
+          cat health-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Raporu sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-health-report
+          path: |
+            health-report.json
+            health-report.md
+          retention-days: 14

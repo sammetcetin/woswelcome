@@ -1,7 +1,6 @@
-version = 10
+version = 11
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "tr"
     description = "Binlerce yerli yabancı dizi arşivi, tüm sezonlar, kesintisiz bölümler. Sadece dizi izle, Dizimom heryerde seninle!"
 
@@ -14,5 +13,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("TvSeries")
-    iconUrl = "https://www.google.com/s2/favicons?domain=www.dizimom.tv&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=www.dizimom.beer&sz=%size%"
 }

@@ -1,7 +1,6 @@
 version = 5
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "tr"
     description = "Güney Kore sevdalılarının vazgeçemediği ve Türkiye'nin en çok ziyaret edilen Güney Kore Portalı; Koreantürk'e hoşgeldiniz!"
 
@@ -12,7 +11,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0
     tvTypes = listOf("AsianDrama")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.koreanturk.com&sz=%size%"
 }

@@ -1,7 +1,6 @@
 version = 3
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "en"
     description = "Truly high definition porn videos and truly for free! We're sure you'll like our best collection containing thousands of 4K, 60FPS and 1080p free HD porn videos with the hottest girls ever!"
 

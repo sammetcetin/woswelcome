@@ -1,7 +1,6 @@
 version = 1
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "en"
     description = "The Cave of Forgotten Films"
 

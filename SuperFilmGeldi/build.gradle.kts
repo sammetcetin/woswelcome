@@ -1,7 +1,6 @@
 version = 3
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "tr"
     description = "Hd film izliyerek arkadaşlarınızla ve sevdiklerinizle iyi bir vakit geçirmek istiyorsanız açın bir film eğlenmeye bakın. Bilim kurgu filmleri, aşk drama vahşet aşk romantik sıradışı korku filmlerini izle."
 
@@ -12,7 +11,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0
     tvTypes = listOf("Movie")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.superfilmgeldi.biz&sz=%size%"
 }

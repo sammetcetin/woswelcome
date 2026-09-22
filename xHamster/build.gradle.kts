@@ -1,7 +1,6 @@
 version = 1
 
 cloudstream {
-    authors     = listOf("coxju")
     language    = "en"
     description = "(VPN) 5 milyondan fazla Porno Videosunu ücretsiz izleyin."
 

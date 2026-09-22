@@ -1,7 +1,6 @@
 version = 65
 
 cloudstream {
-    authors     = listOf("keyiflerolsun", "yusiqo", "inatchii", "JustRelaxable")
     language    = "tr"
     description = "RecTv APK, Türkiye’deki en popüler Çevrimiçi Medya Akış platformlarından biridir. Filmlerin, Canlı Sporların, Web Dizilerinin ve çok daha fazlasının keyfini ücretsiz çıkarın."
 
@@ -12,7 +11,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0
     tvTypes = listOf("Movie", "Live", "TvSeries")
     iconUrl = "https://rectvapk.cc/wp-content/uploads/2023/02/Rec-TV.webp"
 }

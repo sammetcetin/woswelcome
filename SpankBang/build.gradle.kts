@@ -1,7 +1,6 @@
 version = 1
 
 cloudstream {
-    authors     = listOf("coxju", "keyiflerolsun")
     language    = "en"
     description = "(VPN) SpankBang is the hottest free porn site in the world! Cum like never before and explore millions of fresh and free porn videos! Get lit on SpankBang!"
 

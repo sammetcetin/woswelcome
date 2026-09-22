@@ -1,7 +1,6 @@
-version = 8
+version = 9
 
 cloudstream {
-    authors     = listOf("keyiflerolsun")
     language    = "tr"
     description = "Film modun geldiyse yüksek kalitede en yeni filmleri izle, 1080p izleyebileceğiniz reklamsiz film sitesi."
 
@@ -14,5 +13,5 @@ cloudstream {
     **/
     status  = 1 // will be 3 if unspecified
     tvTypes = listOf("Movie")
-    iconUrl = "https://www.google.com/s2/favicons?domain=www.filmmodu17.com&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=www.filmmodu.one&sz=%size%"
 }
