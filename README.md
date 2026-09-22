@@ -2,6 +2,14 @@
 
 CloudStream için Türkçe içerik sağlayıcılarından oluşan çok modüllü eklenti deposu.
 
+## Kısakod ile kurulum
+
+CloudStream → Ayarlar → Eklentiler → Depo ekle alanına şunu yapıştır:
+
+```text
+https://cutt.ly/woswelcome
+```
+
 ## Yerel derleme
 
 Android SDK yolu `local.properties` içinde tanımlandıktan sonra:
