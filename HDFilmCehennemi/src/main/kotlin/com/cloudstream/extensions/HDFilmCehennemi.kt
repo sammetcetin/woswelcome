@@ -2,6 +2,7 @@
 
 package com.cloudstream.extensions
 
+import android.util.Base64
 import android.util.Log
 import org.jsoup.nodes.Element
 import com.lagradost.cloudstream3.*
@@ -10,6 +11,87 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.jsoup.Jsoup
+
+private fun caesarShift(input: String, shift: Int): String {
+    val out = StringBuilder(input.length)
+    for (ch in input) {
+        val code = ch.code
+        when {
+            code in 65..90  -> out.append(((code - 65 + shift) % 26 + 65).toChar())
+            code in 97..122 -> out.append(((code - 97 + shift) % 26 + 97).toChar())
+            else            -> out.append(ch)
+        }
+    }
+    return out.toString()
+}
+
+private fun atobLatin1(data: String): String {
+    return String(Base64.decode(data, Base64.DEFAULT), Charsets.ISO_8859_1)
+}
+
+/**
+ * hdfilmcehennemi.mobi gömü sayfasındaki `var x = fn("...".split("<sep>"))`
+ * ifadesini çözer. Fonksiyon/değişken adları ve ayraç istek başına değişir;
+ * algoritma (dizi-splice, Caesar, base64, permütasyon, XOR) sabittir.
+ */
+private fun hdDecode(parts: List<String>): String {
+    val list = parts.toMutableList()
+    val zLen = list.size - 2
+    val rIdx = zLen % 7
+    val sIdx = 8 + (zLen % 5)
+    val mi = list.removeAt(sIdx)
+    val m9 = list.removeAt(rIdx)
+    var text = list.joinToString("")
+    if (mi.length > 2048) text = text.reversed()
+
+    var o1 = 0
+    var n5 = 0
+    for ((index, ch) in m9.withIndex()) {
+        val code = ch.code
+        o1 = (o1 * 37 + code) % 241
+        n5 = (n5 + ((code shl 1) xor index)) and 255
+    }
+    val yv = (o1 * 3 + n5) % 256
+    val vf = (n5 % 11) + 5
+    var hh = ((n5 * 251 + o1) % 65519) + 1
+
+    for (i in mi.length - 1 downTo 0) {
+        when (val marker = mi[i]) {
+            '7'  -> text = atobLatin1(text)
+            '3'  -> text = text.reversed()
+            else -> {
+                val shift = (26 - ((marker.code - 96) % 26)) % 26
+                text = caesarShift(text, shift)
+            }
+        }
+    }
+    if (m9.length > 4096) text = atobLatin1(text)
+
+    val len = text.length
+    val perm = IntArray(len)
+    for (i in len - 1 downTo 1) {
+        hh = (hh * 97 + 41) % 65519
+        perm[i] = hh % (i + 1)
+    }
+    val chars = text.toCharArray()
+    for (i in 1 until len) {
+        val j = perm[i]
+        val tmp = chars[i]
+        chars[i] = chars[j]
+        chars[j] = tmp
+    }
+    text = String(chars)
+
+    var key = yv
+    val out = StringBuilder(text.length)
+    for (ch in text) {
+        val code = ch.code
+        key = (key * 5 + vf) % 256
+        out.append((code xor key).toChar())
+        key = (key + code) % 256
+    }
+    return out.toString()
+}
 
 class HDFilmCehennemi : MainAPI() {
     override var mainUrl              = "https://www.hdfilmcehennemi.nl"
@@ -144,27 +226,32 @@ class HDFilmCehennemi : MainAPI() {
     }
 
     private suspend fun invokeLocalSource(source: String, url: String, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit ) {
-        val script    = app.get(url, referer = "${mainUrl}/").document.select("script").find { it.data().contains("sources:") }?.data() ?: return
-        val videoData = getAndUnpack(script).substringAfter("file_link=\"").substringBefore("\";")
-        val subData   = script.substringAfter("tracks: [").substringBefore("]")
+        val page = app.get(url, referer = "${mainUrl}/").text
+
+        Regex(""""file":"([^"]+)","kind":"captions","label":"([^"]+)"""").findAll(page).forEach { match ->
+            subtitleCallback.invoke(
+                SubtitleFile(
+                    lang = match.groupValues[2],
+                    url  = fixUrl(match.groupValues[1].replace("\\/", "/"))
+                )
+            )
+        }
+
+        val encoded = Regex("""var \w+ = \w+\("([^"]+)"\.split\("([^"]+)"\)\)""").find(page)
+            ?: throw ErrorLoadingException("HDCH verisi bulunamadi")
+        val m3uLink = hdDecode(encoded.groupValues[1].split(encoded.groupValues[2]))
+        Log.d("HDCH", "m3uLink » $m3uLink")
 
         callback.invoke(
             ExtractorLink(
                 source  = source,
                 name    = source,
-                url     = base64Decode(videoData),
+                url     = m3uLink,
                 referer = "${mainUrl}/",
                 quality = Qualities.Unknown.value,
-                type    = INFER_TYPE
-                // isM3u8  = true
+                isM3u8  = true
             )
         )
-
-        AppUtils.tryParseJson<List<SubSource>>("[${subData}]")?.filter { it.kind == "captions" }?.map {
-            subtitleCallback.invoke(
-                SubtitleFile(it.label.toString(), fixUrl(it.file.toString()))
-            )
-        }
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit ): Boolean {
@@ -186,8 +273,9 @@ class HDFilmCehennemi : MainAPI() {
                     referer = data
                 ).text
 
-                var iframe = Regex("""data-src=\\"([^"]+)""").find(apiGet)?.groupValues?.get(1)!!.replace("\\", "")
-                if (iframe.contains("?rapidrame_id=")) {
+                var iframe = Regex("""data-src=\\"([^"]+)""").find(apiGet)?.groupValues?.get(1)?.replace("\\", "")
+                    ?: return@forEach
+                if (!iframe.contains("hdfilmcehennemi.mobi") && iframe.contains("?rapidrame_id=")) {
                     iframe = "${mainUrl}/playerr/" + iframe.substringAfter("?rapidrame_id=")
                 }
 
@@ -198,12 +286,6 @@ class HDFilmCehennemi : MainAPI() {
 
         return true
     }
-
-    private data class SubSource(
-        @JsonProperty("file")  val file: String?  = null,
-        @JsonProperty("label") val label: String? = null,
-        @JsonProperty("kind")  val kind: String?  = null
-    )
 
     data class Results(
         @JsonProperty("results") val results: List<String> = arrayListOf()

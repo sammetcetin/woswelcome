@@ -13,6 +13,7 @@ val disabled = listOf(
     "OxAx",
     "RecTV",
     "SuperFilmGeldi",
+    "TurkAnime",
     "UgurFilm",
 )
 

@@ -5,6 +5,7 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.utils.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.net.URLEncoder
 
 class JetFilmizle : MainAPI() {
     override var mainUrl = "https://jetfilmizle.now"
@@ -49,9 +50,9 @@ class JetFilmizle : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.post(
-            "$mainUrl/arama?q=",
-            data = mapOf("s" to query),
+        // Site aramayı GET /arama?q=<sorgu> ile yapar; eski POST uç noktası 404 veriyor.
+        val document = app.get(
+            "$mainUrl/arama?q=${URLEncoder.encode(query, "UTF-8")}",
             referer = "$mainUrl/",
         ).document
         return document.select("div.film-card").mapNotNull { it.toSearchResult() }

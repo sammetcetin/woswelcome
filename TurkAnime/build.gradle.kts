@@ -11,7 +11,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
     **/
-    status  = 1 // will be 3 if unspecified
+    status  = 0 // Site kapandi (veda/duyuru sayfasi); resmi yeni alan adi bulunana kadar kapali
     tvTypes = listOf("Anime")
     iconUrl = "https://www.google.com/s2/favicons?domain=www.turkanime.tv&sz=%size%"
 }

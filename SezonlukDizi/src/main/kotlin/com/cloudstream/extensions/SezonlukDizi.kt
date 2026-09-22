@@ -4,8 +4,12 @@ package com.cloudstream.extensions
 import android.util.Log
 import org.jsoup.nodes.Element
 import com.lagradost.cloudstream3.*
+import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
+import okhttp3.Interceptor
+import okhttp3.Response
+import org.jsoup.Jsoup
 
 class SezonlukDizi : MainAPI() {
     override var mainUrl              = "https://sezonlukdizi.cc"
@@ -14,6 +18,29 @@ class SezonlukDizi : MainAPI() {
     override var lang                 = "tr"
     override val hasQuickSearch       = false
     override val supportedTypes       = setOf(TvType.TvSeries)
+
+    // ! CloudFlare bypass
+    override var sequentialMainPage            = true
+    override var sequentialMainPageDelay       = 50L  // ? 0.05 saniye
+    override var sequentialMainPageScrollDelay = 50L  // ? 0.05 saniye
+
+    // ! CloudFlare v2
+    private val cloudflareKiller by lazy { CloudflareKiller() }
+    private val interceptor      by lazy { CloudflareInterceptor(cloudflareKiller) }
+
+    class CloudflareInterceptor(private val cloudflareKiller: CloudflareKiller): Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request  = chain.request()
+            val response = chain.proceed(request)
+            val doc      = Jsoup.parse(response.peekBody(1024 * 1024).string())
+
+            if (doc.text().contains("Just a moment")) {
+                return cloudflareKiller.intercept(chain)
+            }
+
+            return response
+        }
+    }
 
     override val mainPage = mainPageOf(
         "${mainUrl}/diziler.asp?siralama_tipi=id&s="          to "Son Eklenenler",
@@ -27,7 +54,7 @@ class SezonlukDizi : MainAPI() {
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
-        val document = app.get("${request.data}${page}").document
+        val document = app.get("${request.data}${page}", interceptor = interceptor).document
         val home     = document.select("div.afis a").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(request.name, home)
@@ -42,7 +69,7 @@ class SezonlukDizi : MainAPI() {
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
-        val document = app.get("${mainUrl}/diziler.asp?adi=${query}").document
+        val document = app.get("${mainUrl}/diziler.asp?adi=${query}", interceptor = interceptor).document
 
         return document.select("div.afis a").mapNotNull { it.toSearchResult() }
     }
@@ -50,7 +77,7 @@ class SezonlukDizi : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        val document = app.get(url, interceptor = interceptor).document
 
         val title       = document.selectFirst("div.header")?.text()?.trim() ?: return null
         val poster      = fixUrlNull(document.selectFirst("div.image img")?.attr("data-src")) ?: return null
@@ -62,7 +89,7 @@ class SezonlukDizi : MainAPI() {
 
         val endpoint    = url.split("/").last()
 
-        val actorsReq  = app.get("${mainUrl}/oyuncular/${endpoint}").document
+        val actorsReq  = app.get("${mainUrl}/oyuncular/${endpoint}", interceptor = interceptor).document
         val actors     = actorsReq.select("div.doubling div.ui").map {
             Actor(
                 it.selectFirst("div.header")!!.text().trim(),
@@ -71,7 +98,7 @@ class SezonlukDizi : MainAPI() {
         }
 
 
-        val episodesReq = app.get("${mainUrl}/bolumler/${endpoint}").document
+        val episodesReq = app.get("${mainUrl}/bolumler/${endpoint}", interceptor = interceptor).document
         val episodes    = mutableListOf<Episode>()
         for (sezon in episodesReq.select("table.unstackable")) {
             for (bolum in sezon.select("tbody tr")) {
@@ -102,26 +129,30 @@ class SezonlukDizi : MainAPI() {
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
         Log.d("SZD", "data » $data")
-        val document = app.get(data).document
+        val document = app.get(data, interceptor = interceptor).document
         val aspData = getAspData()
         val bid      = document.selectFirst("div#dilsec")?.attr("data-id") ?: return false
         Log.d("SZD", "bid » $bid")
 
         val altyaziResponse = app.post(
             "${mainUrl}/ajax/dataAlternatif${aspData.alternatif}.asp",
-            headers = mapOf("X-Requested-With" to "XMLHttpRequest"),
-            data    = mapOf(
+            headers     = mapOf("X-Requested-With" to "XMLHttpRequest"),
+            referer     = data,
+            data        = mapOf(
                 "bid" to bid,
                 "dil" to "1"
-            )
+            ),
+            interceptor = interceptor
         ).parsedSafe<Kaynak>()
         altyaziResponse?.takeIf { it.status == "success" }?.data?.forEach { veri ->
             Log.d("SZD", "dil»1 | veri.baslik » ${veri.baslik}")
 
             val veriResponse = app.post(
                 "${mainUrl}/ajax/dataEmbed${aspData.embed}.asp",
-                headers = mapOf("X-Requested-With" to "XMLHttpRequest"),
-                data    = mapOf("id" to "${veri.id}")
+                headers     = mapOf("X-Requested-With" to "XMLHttpRequest"),
+                referer     = data,
+                data        = mapOf("id" to "${veri.id}"),
+                interceptor = interceptor
             ).document
 
             val iframe = fixUrlNull(veriResponse.selectFirst("iframe")?.attr("src")) ?: return@forEach
@@ -145,19 +176,23 @@ class SezonlukDizi : MainAPI() {
 
         val dublajResponse = app.post(
             "${mainUrl}/ajax/dataAlternatif${aspData.alternatif}.asp",
-            headers = mapOf("X-Requested-With" to "XMLHttpRequest"),
-            data    = mapOf(
+            headers     = mapOf("X-Requested-With" to "XMLHttpRequest"),
+            referer     = data,
+            data        = mapOf(
                 "bid" to bid,
                 "dil" to "0"
-            )
+            ),
+            interceptor = interceptor
         ).parsedSafe<Kaynak>()
         dublajResponse?.takeIf { it.status == "success" }?.data?.forEach { veri ->
             Log.d("SZD", "dil»0 | veri.baslik » ${veri.baslik}")
 
             val veriResponse = app.post(
                 "${mainUrl}/ajax/dataEmbed${aspData.embed}.asp",
-                headers = mapOf("X-Requested-With" to "XMLHttpRequest"),
-                data    = mapOf("id" to "${veri.id}")
+                headers     = mapOf("X-Requested-With" to "XMLHttpRequest"),
+                referer     = data,
+                data        = mapOf("id" to "${veri.id}"),
+                interceptor = interceptor
             ).document
 
             val iframe = fixUrlNull(veriResponse.selectFirst("iframe")?.attr("src")) ?: return@forEach
@@ -184,7 +219,7 @@ class SezonlukDizi : MainAPI() {
 
     //Helper function for getting the number (probably some kind of version?) after the dataAlternatif and dataEmbed
     private suspend fun getAspData() : AspData{
-        val websiteCustomJavascript = app.get("${this.mainUrl}/js/site.min.js")
+        val websiteCustomJavascript = app.get("${this.mainUrl}/js/site.min.js", interceptor = interceptor)
         val dataAlternatifAsp = Regex("""dataAlternatif(.*?).asp""").find(websiteCustomJavascript.text)?.groupValues?.get(1)
             .toString()
         val dataEmbedAsp = Regex("""dataEmbed(.*?).asp""").find(websiteCustomJavascript.text)?.groupValues?.get(1)
