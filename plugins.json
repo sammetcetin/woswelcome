@@ -182,10 +182,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=filmmakinesi.to&sz=%size%",
-        "fileHash": "sha256-8074736424fbdab6d6638f290758a0613f44d03501e1fd49faeb96032cb48151",
+        "fileHash": "sha256-b595f19d84fbc1a1e4a29aef790a9795182ea84536d257b900639ef4e5358daa",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 17514,
+        "fileSize": 19871,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -194,7 +194,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 8,
+        "version": 9,
         "internalName": "FilmMakinesi",
         "description": "Film Makinesi, en yeni ve en g\u00fcncel filmleri sitemizde full HD kalite fark\u0131 ile izleyebilirsiniz. HD film izle denildi\u011finde akla gelen en kaliteli film izleme sitesi.",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/FilmMakinesi.cs3",
@@ -262,10 +262,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=hdfilmcehennemi.com&sz=%size%",
-        "fileHash": "sha256-210d08555ef68d6708e3c886a5ddb7357e1f76a8af4b4afe38282daa7b308eb7",
+        "fileHash": "sha256-a6d20cadcf3c378d9fc765920f3c4349646994e4de3d000a56c62e6a37104b8c",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 22382,
+        "fileSize": 21494,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -275,7 +275,7 @@
             "Movie",
             "TvSeries"
         ],
-        "version": 18,
+        "version": 19,
         "internalName": "HDFilmCehennemi",
         "description": "T\u00fcrkiye'nin en h\u0131zl\u0131 hd film izleme sitesi",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/HDFilmCehennemi.cs3",
@@ -323,10 +323,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=jetfilmizle.now&sz=%size%",
-        "fileHash": "sha256-44fb6b5ecc2c6d143dc0bb3110390277170ba1b0e6d8b0dfca978a29d0539d18",
+        "fileHash": "sha256-e41a29289c5f0b350766ddb1e3366cdc5b9077a75c2a40918c90ab6252f04561",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 16222,
+        "fileSize": 16230,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -335,7 +335,7 @@
         "tvTypes": [
             "Movie"
         ],
-        "version": 20,
+        "version": 21,
         "internalName": "JetFilmizle",
         "description": "Binlerce Film \u0130zleme Se\u00e7ene\u011fiyle En \u0130yi Film \u0130zleme Sitesi",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/JetFilmizle.cs3",
@@ -425,10 +425,10 @@
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=sezonlukdizi.cc&sz=%size%",
-        "fileHash": "sha256-085c6982a06342da53fa9e0619a8a16a128a437997b036a67e4453acac1b8f43",
+        "fileHash": "sha256-298b81913ea762ba524f64ec3950d37b1d893e7dd7d1739b68323a7107656a87",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 21443,
+        "fileSize": 23188,
         "status": 1,
         "language": "tr",
         "authors": [
@@ -437,7 +437,7 @@
         "tvTypes": [
             "TvSeries"
         ],
-        "version": 3,
+        "version": 4,
         "internalName": "SezonlukDizi",
         "description": "G\u00fcncel ve eski dizileri en iyi g\u00f6r\u00fcnt\u00fc kalitesiyle bulabilece\u011finiz yabanc\u0131 dizi izleme siteniz.",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SezonlukDizi.cs3",
@@ -504,26 +504,6 @@
         "description": "(VPN) SpankBang is the hottest free porn site in the world! Cum like never before and explore millions of fresh and free porn videos! Get lit on SpankBang!",
         "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/SpankBang.cs3",
         "name": "SpankBang"
-    },
-    {
-        "iconUrl": "https://www.google.com/s2/favicons?domain=www.turkanime.tv&sz=%size%",
-        "fileHash": "sha256-75a1e6c5a68fb90328278d3528252983aa5bf5edc883b8d64a252b33752f58e9",
-        "apiVersion": 1,
-        "repositoryUrl": "https://github.com/sammetcetin/woswelcome",
-        "fileSize": 18126,
-        "status": 1,
-        "language": "tr",
-        "authors": [
-            
-        ],
-        "tvTypes": [
-            "Anime"
-        ],
-        "version": 2,
-        "internalName": "TurkAnime",
-        "description": "T\u00fcrk Anime TV - T\u00fcrkiye'nin Online Anime izleme sitesi.",
-        "url": "https://raw.githubusercontent.com/sammetcetin/woswelcome/builds/TurkAnime.cs3",
-        "name": "TurkAnime"
     },
     {
         "iconUrl": "https://www.google.com/s2/favicons?domain=uncutmaza.cc&sz=%size%",
